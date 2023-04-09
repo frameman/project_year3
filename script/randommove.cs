@@ -13,10 +13,9 @@ public class randommove : MonoBehaviour
     public float eatingTime = 0f;
     public float time_to_toilet =5f;
     public float time_to_eat = 13f;
-    
+    public bool iseating = false;
     void Update()
     {
-
         if (eatingTime<=time_to_eat && toiletTime <= time_to_toilet)
         {
             eatingTime += Time.deltaTime;
@@ -43,15 +42,23 @@ public class randommove : MonoBehaviour
         // Move forward
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         }
-            else if(eatingTime>=time_to_eat){
+            else if(!iseating && eatingTime>=time_to_eat)
+            {
                 eating eat  = GetComponent<eating>();
                 eat.going_to_eat();
                 
             }
-            else if(toiletTime>=time_to_toilet){
+            else if(toiletTime>=time_to_toilet)
+            {
                 toilet toileting = GetComponent<toilet>();
                 toileting.going_toilet();
-               
-        }
+            }
+             else
+             {
+                havefood finding = GetComponent<havefood>();
+                    finding.check_for_food();
+            }
+             
     }
 }
+

@@ -8,7 +8,7 @@ public class Transparent : MonoBehaviour
 {
     public GameObject eye;
     public GameObject skin;
-    public GameObject timerObject;
+
     public TextMeshPro timerText;
     public float timerDuration = 10f;
 
@@ -16,37 +16,33 @@ public class Transparent : MonoBehaviour
     private bool isTransparent = false;
     private bool isTimerRunning = false;
 
-    void Start(){
-        ChangeAlpha(timerObject.GetComponent<Renderer>().material, 0f);
-    }
 
-    void OnTriggerEnter(Collider other)
+
+   void OnTriggerEnter(Collider other)
+{
+    Debug.Log("Trigger entered");
+    if (other.gameObject.tag == "toilet")
     {
-        Debug.Log("Trigger entered");
-        if (other.gameObject.tag == "toilet")
+        randommove ran = GetComponent<randommove>();
+        if (ran.toiletTime >= ran.time_to_toilet && !isTransparent)
         {
-            print("collided");
-            if (!isTransparent)
-            {
-                alpha = 0f;
-                isTransparent = true;
-                ChangeAlpha(eye.GetComponent<Renderer>().material, alpha);
-                ChangeAlpha(skin.GetComponent<Renderer>().material, alpha);
-                ChangeAlpha(timerObject.GetComponent<Renderer>().material, 1f);
-
-                // Start the timer coroutine
-                StartCoroutine(TimerCoroutine());
-            }
+            alpha = 0f;
+            isTransparent = true;
+            ChangeAlpha(eye.GetComponent<Renderer>().material, alpha);
+            ChangeAlpha(skin.GetComponent<Renderer>().material, alpha);
+            StartCoroutine(TimerCoroutine());
         }
     }
+}
+
 
     void OnTriggerExit(Collider other)
     {
         //Debug.Log("Trigger entered");
         if (other.gameObject.tag == "toilet")
         {
+            
             print("collision ended");
-
             if (isTransparent)
             {
                 alpha = 1f;
@@ -57,7 +53,8 @@ public class Transparent : MonoBehaviour
                 // Stop the timer coroutine
                 StopCoroutine(TimerCoroutine());
             }
-        }
+            }
+        
     }
 
     void ChangeAlpha(Material mat, float alphaVal)
@@ -76,10 +73,10 @@ public class Transparent : MonoBehaviour
             timerDuration--;
             DisplayTime(timerDuration);
         }
-        ChangeAlpha(timerObject.GetComponent<Renderer>().material, 0f);
+        
         timerDuration = 10f;
         isTimerRunning = false;
-        timerText.text = "Toilte Time";
+        timerText.text = " ";
     }
 
     void DisplayTime(float timeToDisplay)

@@ -5,12 +5,16 @@ public class ReturnToCamera : MonoBehaviour
     public Camera cameraToLookAt; // Assign the camera component to this variable in the Inspector
     public float moveSpeed = 1f; // Speed at which the object moves towards the camera
     public float maxRotationAngle = 5f;
-    public float fixedDistance = 200f; // Distance to keep the object from the camera
+    public float fixedDistance = 50f; // Distance to keep the object from the camera
 
-    void Update()
+   // public void Update(){
+   //     find_master();
+   // }
+
+
+    public void find_master()
     {
         ReturnToCamera objectToCamera = GetComponent<ReturnToCamera>();
-
         // If the object is not staying in front of the camera yet, attach the ReturnToCamera script
         if (objectToCamera == null)
         {

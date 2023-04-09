@@ -6,7 +6,7 @@ public class eating : MonoBehaviour
     public Transform targetObject;
     public float moveSpeed = 100f;
     public float maxRotationAngle = 5f;
-    public float fixedDistance = 300f;
+    public float fixedDistance = 200f;
     private Vector3 _initialOffset;
 
     private void Start()
@@ -38,20 +38,9 @@ public class eating : MonoBehaviour
         }
         else
         {
-            StartCoroutine(WaitAndPrint(3f));
-            
+            randommove ran=GetComponent<randommove>();
+                ran.iseating = true;
         }
         
-    }
-    
-
-
-
-    IEnumerator WaitAndPrint(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        Debug.Log("Waited for " + waitTime + " seconds.");
-        randommove ran  = GetComponent<randommove>();
-        ran.eatingTime = 0f;
     }
 }

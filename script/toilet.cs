@@ -36,14 +36,11 @@ public class toilet : MonoBehaviour
         }
         else
         {
-            StartCoroutine(WaitAndPrint(3f));
+            StartCoroutine(WaitAndPrint(10f));
         }
         
     }
     
-
-
-
     IEnumerator WaitAndPrint(float waitTime)
     {
         randommove ran  = GetComponent<randommove>();
