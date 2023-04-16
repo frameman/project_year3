@@ -23,6 +23,8 @@ public class dropping2 : MonoBehaviour
         
             if(flag)
             {
+                print(flag);
+                StartCoroutine(DelayedMovement5());
                 print("dropfood");
                 Vector3 spawnPos = spawnOnTopOf.transform.position + new Vector3(0f, spawnOnTopOf.transform.localScale.y * 0.5f + 50f, 0f);
 
@@ -35,7 +37,6 @@ public class dropping2 : MonoBehaviour
                     //cube.GetComponent<Rigidbody>().AddForce(Vector3.down * 10f, ForceMode.Impulse);
                 }
                 
-                StartCoroutine(DelayedMovement5());
             }
             else{
                 print("in");

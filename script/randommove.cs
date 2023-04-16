@@ -14,10 +14,18 @@ public class randommove : MonoBehaviour
     public float time_to_toilet =5f;
     public float time_to_eat = 13f;
     public bool iseating = false;
+  
+    public Animator anim;
+    public bool walking = true;
+
+    void Start(){
+        anim = GetComponent<Animator>();
+    }
     void Update()
     {
-        if (eatingTime<=time_to_eat && toiletTime <= time_to_toilet)
+        if (eatingTime<time_to_eat && toiletTime < time_to_toilet )
         {
+            anim.Play("atSimple_Walk_F_IPP");
             eatingTime += Time.deltaTime;
             toiletTime += Time.deltaTime;
             elapsedTime += Time.deltaTime;
@@ -31,6 +39,14 @@ public class randommove : MonoBehaviour
 
         // Check the dot product between the current and target directions
         float forwardDot = Vector3.Dot(transform.forward, randomDirection);
+        if (forwardDot > 0)
+        {
+     
+        }
+        else if (forwardDot < 0)
+        {
+    
+        }
 
         // Rotate towards the random direction if the dot product is below the threshold
         if (forwardDot < minForwardDot)
@@ -42,21 +58,21 @@ public class randommove : MonoBehaviour
         // Move forward
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         }
-            else if(!iseating && eatingTime>=time_to_eat)
+        else if(!iseating && eatingTime>=time_to_eat)
             {
                 eating eat  = GetComponent<eating>();
                 eat.going_to_eat();
-                
             }
-            else if(toiletTime>=time_to_toilet)
+            else if( toiletTime>time_to_toilet)
             {
                 toilet toileting = GetComponent<toilet>();
                 toileting.going_toilet();
+               
             }
              else
              {
                 havefood finding = GetComponent<havefood>();
-                    finding.check_for_food();
+                finding.check_for_food();
             }
              
     }

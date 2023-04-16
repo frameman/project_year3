@@ -6,7 +6,7 @@ public class eating : MonoBehaviour
     public Transform targetObject;
     public float moveSpeed = 100f;
     public float maxRotationAngle = 5f;
-    public float fixedDistance = 200f;
+    public float fixedDistance = 100f;
     private Vector3 _initialOffset;
 
     private void Start()
@@ -39,7 +39,7 @@ public class eating : MonoBehaviour
         else
         {
             randommove ran=GetComponent<randommove>();
-                ran.iseating = true;
+            ran.iseating = true;
         }
         
     }
