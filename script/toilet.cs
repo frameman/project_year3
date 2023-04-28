@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class toilet : MonoBehaviour
 {
-    public float toilet_finish= 5f;
+    public float toilet_finish= 10f;
     public float time_to_toilet =0f;
-    public float delayTime = 10f;
     private Vector3 _initialOffset;
     public Transform targetObject;
     public float moveSpeed = 100f;
     public float maxRotationAngle = 5f;
-    public float fixedDistance = 10f;
+    public float fixedDistance = 0.1f;
     public bool hasPlayedStartAnim = false;
     public bool waiting = false;
 
-
-
     public void Start(){
+      
     }
 
     // Update is called once per frame
@@ -36,8 +35,10 @@ public class toilet : MonoBehaviour
         float distanceToTarget = Vector3.Distance(transform.position, targetOffsetPosition);
         
         // Check if the distance to the target is greater than the fixed distance
-        if (distanceToTarget >= fixedDistance)
+        if (distanceToTarget > 0 )
         {
+            action act = GetComponent<action>();
+            act._walking();
             // Move the object towards the target offset position
             transform.position = Vector3.MoveTowards(transform.position, targetOffsetPosition, moveSpeed * Time.deltaTime);
     
@@ -46,34 +47,58 @@ public class toilet : MonoBehaviour
         {
             if (!hasPlayedStartAnim)
             {
-                ran.anim.Play("CatSimple_Sit_start");
-                hasPlayedStartAnim = true;
-                }
-        if (!waiting)
+                ran.anim.Play("CatSimple_Idle_6");
+                Invoke("Sit", 6f);
+                
+            }
+            
+            else if (!waiting)
             {
-          
-           if (!ran.anim.GetCurrentAnimatorStateInfo(0).IsName("CatSimple_Sit_loop_2") && time_to_toilet>1.2)
+                if (!ran.anim.GetCurrentAnimatorStateInfo(0).IsName("CatSimple_Sit_loop_2") && time_to_toilet>1.2)
                 {
                 ran.anim.Play("CatSimple_Sit_loop_2");
                 }
-            time_to_toilet += Time.deltaTime;
+                time_to_toilet += Time.deltaTime;
+            
+
+                if (time_to_toilet > toilet_finish )
+                {
+                    waiting = true;
+                    ran.anim.Play("CatSimple_Sit_end");
+                    Invoke("ResetToiletTime", 7f);
+                }
             }
-        if (time_to_toilet > toilet_finish)
-            {
-            waiting = true;
-            ran.anim.Play("CatSimple_Sit_end");
-           Invoke("ResetToiletTime", 1f);
-            }
+           
+
         }
+        
+
     }
 
-private void ResetToiletTime()
-{
-    print("hello");
-    randommove ran  = GetComponent<randommove>();
-    time_to_toilet = 0;
-    ran.toiletTime =0f;
-    hasPlayedStartAnim = false;
-    waiting = false;
-}
+    private void ResetToiletTime()
+    {
+     reset();
+    }
+
+    private void Sit()
+    {
+        hasPlayedStartAnim = true;
+    }
+
+
+    public void reset(){
+        randommove ran  = GetComponent<randommove>();
+        time_to_toilet = 0;
+        ran.toiletTime =0f;
+        ran.time_to_toilet =UnityEngine.Random.Range(60f, 181f);
+        hasPlayedStartAnim = false;
+        waiting = false;
+    }
+
+
+
+IEnumerator DelayeUP(){
+    yield return new WaitForSeconds(1f);
+    
+    }
 }

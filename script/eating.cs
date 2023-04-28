@@ -4,9 +4,9 @@ using UnityEngine;
 public class eating : MonoBehaviour
 {
     public Transform targetObject;
-    public float moveSpeed = 100f;
+    public float moveSpeed = 0.5f;
     public float maxRotationAngle = 5f;
-    public float fixedDistance = 100f;
+    public float fixedDistance = 3f;
     private Vector3 _initialOffset;
     public float finish_eating= 5f;
     public float time_to_eat =0f;
@@ -39,6 +39,8 @@ public class eating : MonoBehaviour
         // Check if the distance to the target is greater than the fixed distance
         if (distanceToTarget >= fixedDistance)
         {
+            action act = GetComponent<action>();
+            act._walking();
             // Move the object towards the target offset position
             transform.position = Vector3.MoveTowards(transform.position, targetOffsetPosition, moveSpeed * Time.deltaTime);
         }
@@ -75,6 +77,7 @@ public class eating : MonoBehaviour
                 {
                     Destroy(food);
                 }
+                ran._come = true;
             }
             
             } 

@@ -1,12 +1,14 @@
 using UnityEngine;
-
+using UnityEngine.XR.ARFoundation;
 public class ReturnToCamera : MonoBehaviour
 {
-    public Camera cameraToLookAt; // Assign the camera component to this variable in the Inspector
-    public float moveSpeed = 100f; // Speed at which the object moves towards the camera
+    //public GameObject cameraToLookAt; // Assign the camera component to this variable in the Inspector
+    public Camera cameraToLookAt;
+    public float moveSpeed = 0.5f; // Speed at which the object moves towards the camera
     public float maxRotationAngle = 5f;
-    public float fixedDistance = 50f; // Distance to keep the object from the camera
-
+    public float fixedDistance = 2f; // Distance to keep the object from the camera
+    public Animator animation;
+    public bool _calling = true;
    // public void Update(){
    //     find_master();
    // }
@@ -14,13 +16,18 @@ public class ReturnToCamera : MonoBehaviour
 
     public void find_master()
     {
-        ReturnToCamera objectToCamera = GetComponent<ReturnToCamera>();
-        // If the object is not staying in front of the camera yet, attach the ReturnToCamera script
+         ReturnToCamera2 objectToCamera = GetComponent<ReturnToCamera2>();
         if (objectToCamera == null)
+            {
+                gameObject.AddComponent<ReturnToCamera2>();
+                return;
+            }
+       
+        /*if (GetComponent<ARCameraManager>() == null)
         {
-            gameObject.AddComponent<ReturnToCamera>();
+             cameraToLookAt = GameObject.Find("AR Camera");
             return;
-        }
+        }*/
 
         Vector3 cameraPosition = cameraToLookAt.transform.position;
         Vector3 objectPosition = transform.position;
@@ -33,6 +40,18 @@ public class ReturnToCamera : MonoBehaviour
         Vector3 targetPosition = cameraPosition + cameraToLookAt.transform.forward * fixedDistance;
         targetPosition.y = objectPosition.y;
         // Move the object towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+    
+         float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+         if (distanceToTarget >= fixedDistance){
+                animation.Play("atSimple_Walk_F_IPP");
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                print("distanceToTarget = " + distanceToTarget);
+            }
+            else{
+                animation.Play("CatSimple_SharpenClaws_Vert");
+            }
     }
+
 }
+
